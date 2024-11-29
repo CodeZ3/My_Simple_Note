@@ -38,17 +38,16 @@ class DatabaseHelper {
   }
 
   /// Callback method to create the database schema during the first initialization.
-  Future<void> _onCreate(Database db, int version) async {
-    // SQL command to create the notes table
-    await db.execute('''
-      CREATE TABLE $_tableName (
-        $_colId INTEGER PRIMARY KEY AUTOINCREMENT, // Auto-increment ID
-        $_colTitle TEXT NOT NULL, // Note title cannot be null
-        $_colContent TEXT NOT NULL, // Note content cannot be null
-        $_colDateAdded TEXT NOT NULL // ISO8601 timestamp for note creation
-      )
-    ''');
-  }
+Future<void> _onCreate(Database db, int version) async {
+  await db.execute('''
+    CREATE TABLE $_tableName (
+      $_colId INTEGER PRIMARY KEY AUTOINCREMENT,
+      $_colTitle TEXT NOT NULL,
+      $_colContent TEXT NOT NULL,
+      $_colDateAdded TEXT NOT NULL
+    )
+  ''');
+}
 
   /// Inserts a new note into the database.
   ///
