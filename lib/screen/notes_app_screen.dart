@@ -34,8 +34,8 @@ class NotesAppScreenState extends State<NotesAppScreen> {
   Future<void> _loadNotes() async {
     final notes = await _dbHelper.fetchNotes();
     setState(() {
-      // Reverse the list to show the latest notes at the top
-      _notes = notes.reversed.toList();
+      // Reverse the list to show the latest notes at the top based on date_added
+      _notes = notes;
     });
   }
 
