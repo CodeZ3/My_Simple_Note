@@ -38,8 +38,8 @@ class DatabaseHelper {
   }
 
   /// Callback method to create the database schema during the first initialization.
-Future<void> _onCreate(Database db, int version) async {
-  await db.execute('''
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
     CREATE TABLE $_tableName (
       $_colId INTEGER PRIMARY KEY AUTOINCREMENT,
       $_colTitle TEXT NOT NULL,
@@ -47,7 +47,7 @@ Future<void> _onCreate(Database db, int version) async {
       $_colDateAdded TEXT NOT NULL
     )
   ''');
-}
+  }
 
   /// Inserts a new note into the database.
   ///
@@ -65,7 +65,7 @@ Future<void> _onCreate(Database db, int version) async {
   /// Returns a list of maps, where each map represents a note.
   Future<List<Map<String, dynamic>>> fetchNotes() async {
     final db = await database;
-    return await db.query('notes', orderBy: 'date_added DESC');
+    return await db.query(_tableName, orderBy: 'date_added DESC'); // Ensure correct ordering
   }
 
   /// Updates an existing note in the database.
