@@ -104,7 +104,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                     horizontal: 24.0,
                   ),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16.0), // Slightly rounded corners
+                    borderRadius: BorderRadius.circular(20.0), // Slightly rounded corners
                   ),
                 ),
                 onPressed: () {
