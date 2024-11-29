@@ -31,7 +31,20 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.note == null ? 'Add Note' : 'Edit Note'),
+        title: Text(
+          widget.note == null ? 'Add Note' : 'Edit Note',
+          style: const TextStyle(color: Colors.white),
+        ),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF6A11CB), Color(0xFF2575FC)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -41,7 +54,17 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
             children: [
               TextFormField(
                 controller: _titleController,
-                decoration: const InputDecoration(labelText: 'Title'),
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  labelText: 'Title',
+                  labelStyle: TextStyle(color: Colors.black),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Title is required';
@@ -49,9 +72,20 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _contentController,
-                decoration: const InputDecoration(labelText: 'Content'),
+                style: const TextStyle(color: Colors.black),
+                decoration: const InputDecoration(
+                  labelText: 'Content',
+                  labelStyle: TextStyle(color: Colors.black),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black),
+                  ),
+                ),
                 maxLines: 5,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -62,6 +96,17 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black, // Button color
+                  foregroundColor: Colors.white, // Text color
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 12.0,
+                    horizontal: 24.0,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0), // Slightly rounded corners
+                  ),
+                ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final title = _titleController.text;
@@ -85,7 +130,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                     }
                   }
                 },
-                child: Text(widget.note == null ? 'Add Note' : 'Save Changes'),
+                child: Text(widget.note == null ? 'Save' : 'Save'),
               ),
             ],
           ),
