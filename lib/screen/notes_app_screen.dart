@@ -39,29 +39,6 @@ class NotesAppScreenState extends State<NotesAppScreen> {
     });
   }
 
-  void _deleteNoteConfirm(int id) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Note'),
-        content: const Text('Are you sure you want to delete this note?'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              _dbHelper.deleteNote(id).then((_) => _loadNotes());
-            },
-            child: const Text('Yes'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('No'),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _sortNotes() {
     setState(() {
       _notes.sort((a, b) {
@@ -71,6 +48,30 @@ class NotesAppScreenState extends State<NotesAppScreen> {
       });
       _sortAscending = !_sortAscending;
     });
+  }
+
+  void _deleteNoteConfirm(int id) {
+    showDialog(
+      context: context,
+      builder: (context) =>
+          AlertDialog(
+            title: const Text('Delete Note'),
+            content: const Text('Are you sure you want to delete this note?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _dbHelper.deleteNote(id).then((_) => _loadNotes());
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('No'),
+              ),
+            ],
+          ),
+    );
   }
 
   @override
@@ -86,7 +87,7 @@ class NotesAppScreenState extends State<NotesAppScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Set this to transparent for the gradient
+        backgroundColor: Colors.transparent,
         title: _isSearching
             ? TextField(
           onChanged: (value) {
@@ -108,7 +109,7 @@ class NotesAppScreenState extends State<NotesAppScreen> {
           IconButton(
             icon: Icon(
               _isSearching ? Icons.close : Icons.search,
-              color: Colors.black, // Search icon color
+              color: Colors.black,
             ),
             onPressed: () {
               setState(() {
@@ -120,7 +121,7 @@ class NotesAppScreenState extends State<NotesAppScreen> {
           IconButton(
             icon: const Icon(
               Icons.sort,
-              color: Colors.black, // Sort icon color
+              color: Colors.black,
             ),
             onPressed: _sortNotes,
           ),
@@ -128,14 +129,13 @@ class NotesAppScreenState extends State<NotesAppScreen> {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.cyan, Colors.indigo], // Gradient for AppBar
+              colors: [Colors.cyan, Colors.indigo],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurple,
         onPressed: () async {
@@ -143,31 +143,35 @@ class NotesAppScreenState extends State<NotesAppScreen> {
             context,
             MaterialPageRoute(builder: (context) => const AddEditNoteScreen()),
           );
-          if (result == true) _loadNotes(); // Refresh notes after adding
+          if (result == true) _loadNotes(); // Refresh the list after adding/editing
         },
         child: const Icon(Icons.add),
       ),
+
       body: filteredNotes.isEmpty
-          ? const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.note_alt_outlined, size: 80, color: Colors.white),
-            SizedBox(height: 16),
-            Text(
-              'No Notes Available',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          ? Container( // Wrap the column with a container
+        color: Colors.white, // Set a solid white background
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.note_alt_outlined, size: 80, color: Colors.grey), // Use black icon color for visibility
+              SizedBox(height: 16),
+              Text(
+                'No Notes Available',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black, // Set text color to black
+                ),
               ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'Tap the + button to add your first note!',
-              style: TextStyle(fontSize: 14, color: Colors.white),
-            ),
-          ],
+              SizedBox(height: 8),
+              Text(
+                'Tap the + button to add your first note!',
+                style: TextStyle(fontSize: 14, color: Colors.black), // Set text color to black
+              ),
+            ],
+          ),
         ),
       )
           : ListView.builder(
@@ -182,11 +186,10 @@ class NotesAppScreenState extends State<NotesAppScreen> {
               final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      AddEditNoteScreen(note: note),
+                  builder: (context) => AddEditNoteScreen(note: note),
                 ),
               );
-              if (result == true) _loadNotes(); // Refresh notes after editing
+              if (result == true) _loadNotes(); // Refresh after editing
             },
             onDelete: () => _deleteNoteConfirm(note['id']),
           );
